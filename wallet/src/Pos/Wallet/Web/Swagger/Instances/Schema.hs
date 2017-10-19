@@ -13,10 +13,11 @@ import           Control.Lens               (mapped, (?~))
 import           Data.Swagger               (NamedSchema (..), SwaggerType (..),
                                              ToParamSchema (..), ToSchema (..),
                                              declareNamedSchema, declareSchemaRef,
-                                             defaultSchemaOptions,
-                                             format, genericDeclareNamedSchema,
-                                             name, properties, required, type_)
+                                             defaultSchemaOptions, format,
+                                             genericDeclareNamedSchema, name, properties,
+                                             required, type_)
 import           Data.Typeable              (Typeable, typeRep)
+import           Data.Version               (Version)
 import           Servant.Multipart          (FileData (..))
 
 import           Pos.Types                  (ApplicationName, BlockCount (..),
@@ -75,6 +76,9 @@ instance ToSchema      ChainDifficulty
 instance ToSchema      BlockVersion
 instance ToSchema      BackupPhrase
 instance ToParamSchema CT.CPassPhrase
+instance ToSchema      CT.ApiVersion
+instance ToSchema      Version
+instance ToSchema      CT.ClientInfo
 
 instance ToSchema FileData where
     declareNamedSchema _ = do

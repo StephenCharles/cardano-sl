@@ -59,6 +59,8 @@ module Pos.Wallet.Web.Api
        , ImportBackupJSON
        , ExportBackupJSON
 
+       , GetClientInfo
+
        , WalletSwaggerApi
        , swaggerWalletApi
        ) where
@@ -82,7 +84,7 @@ import           Pos.Util.Servant           (ApiLoggingConfig, CCapture, CQueryP
                                              VerbMod, WithTruncatedLog (..),
                                              applyLoggingToHandler, inRouteServer,
                                              serverHandlerL')
-import           Pos.Wallet.Web.ClientTypes (Addr, CAccount, CAccountId, CAccountInit,
+import           Pos.Wallet.Web.ClientTypes (Addr, CAccount, CAccountId, CAccountInit, ClientInfo,
                                              CAccountMeta, CAddress, CCoin, CId,
                                              CInitialized, CPaperVendWalletRedeem,
                                              CPassPhrase, CProfile, CTx, CTxId, CTxMeta,
@@ -380,6 +382,14 @@ type ExportBackupJSON =
     :> ReqBody '[JSON] Text
     :> WRes Post ()
 
+-------------------------------------------------------------------------
+-- Settings
+-------------------------------------------------------------------------
+
+type GetClientInfo =
+       "info"
+    :> WRes Get ClientInfo
+
 -- | Servant API which provides access to wallet.
 -- TODO: Should be composed depending on the resource - wallets, txs, ... http://haskell-servant.github.io/tutorial/0.4/server.html#nested-apis
 type WalletApi = ApiPrefix :> (
@@ -487,6 +497,11 @@ type WalletApi = ApiPrefix :> (
      ImportBackupJSON
     :<|>
      ExportBackupJSON
+    :<|>
+     -------------------------------------------------------------------------
+     -- Client info: various versions
+     -------------------------------------------------------------------------
+     GetClientInfo
     )
 
 -- | Helper Proxy.

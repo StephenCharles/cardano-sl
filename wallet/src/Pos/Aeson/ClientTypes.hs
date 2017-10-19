@@ -2,18 +2,23 @@ module Pos.Aeson.ClientTypes
        (
        ) where
 
+import           Universum
+
+import           Data.Aeson                   (ToJSON (..), object, (.=))
 import           Data.Aeson.TH                (defaultOptions, deriveJSON, deriveToJSON)
+import           Data.Version                 (showVersion)
+
 import           Pos.Core.Types               (SoftwareVersion (..))
 import           Pos.Util.BackupPhrase        (BackupPhrase)
-import           Pos.Wallet.Web.ClientTypes   (Addr, CAccount, CAccountId, CAccountInit,
-                                               CAccountMeta, CAddress, CCoin, CHash, CId,
-                                               CInitialized, CInitialized,
-                                               CPaperVendWalletRedeem, CProfile, CProfile,
+import           Pos.Wallet.Web.ClientTypes   (Addr, ApiVersion (..), CAccount,
+                                               CAccountId, CAccountInit, CAccountMeta,
+                                               CAddress, CCoin, CHash, CId, CInitialized,
+                                               CPaperVendWalletRedeem, CProfile,
                                                CPtxCondition, CTExMeta, CTx, CTxId,
                                                CTxMeta, CUpdateInfo, CWAddressMeta,
                                                CWallet, CWalletAssurance, CWalletInit,
-                                               CWalletMeta, CWalletRedeem, SyncProgress,
-                                               Wal)
+                                               CWalletMeta, CWalletRedeem,
+                                               ClientInfo (..), SyncProgress, Wal)
 import           Pos.Wallet.Web.Error         (WalletError)
 import           Pos.Wallet.Web.Sockets.Types (NotifyEvent)
 
@@ -48,3 +53,15 @@ deriveToJSON defaultOptions ''CTx
 deriveToJSON defaultOptions ''CTExMeta
 deriveToJSON defaultOptions ''SoftwareVersion
 deriveToJSON defaultOptions ''CUpdateInfo
+
+instance ToJSON ApiVersion where
+    toJSON ApiVersion0 = "v0"
+
+instance ToJSON ClientInfo where
+    toJSON ClientInfo {..} =
+        object
+            [ "gitRevision" .= ciGitRevision
+            , "softwareVersion" .= pretty ciSoftwareVersion
+            , "cabalVersion" .= showVersion ciCabalVersion
+            , "apiVersion" .= ciApiVersion
+            ]
