@@ -12,6 +12,8 @@ module Pos.Wallet.Web.Methods.Misc
        , postponeUpdate
        , applyUpdate
 
+       , confirmedProposals
+
        , syncProgress
        , localTimeDifference
 
@@ -24,14 +26,16 @@ import           Mockable                   (MonadMockable)
 
 import           Pos.Client.KeyStorage      (MonadKeys, deleteSecretKey, getSecretKeys)
 import           Pos.Core                   (SoftwareVersion (..), decodeTextAddress)
+import           Pos.DB.Class               (MonadDBRead)
 import           Pos.NtpCheck               (NtpCheckMonad, NtpStatus (..),
                                              mkNtpStatusVar)
 import           Pos.Update.Configuration   (HasUpdateConfiguration, curSoftwareVersion)
+import qualified Pos.Update.DB              as GS
 import           Pos.Util                   (maybeThrow)
 
 import           Pos.Wallet.WalletMode      (MonadBlockchainInfo (..), MonadUpdates (..))
-import           Pos.Wallet.Web.ClientTypes (CProfile (..), CUpdateInfo (..),
-                                             SyncProgress (..))
+import           Pos.Wallet.Web.ClientTypes (CConfirmedProposalState (..), CProfile (..),
+                                             CUpdateInfo (..), SyncProgress (..))
 import           Pos.Wallet.Web.Error       (WalletError (..))
 import           Pos.Wallet.Web.State       (MonadWalletDB, MonadWalletDBRead,
                                              getNextUpdate, getProfile, removeNextUpdate,
@@ -83,6 +87,18 @@ postponeUpdate = removeNextUpdate
 -- | Delete next update info and restart immediately
 applyUpdate :: (MonadWalletDB ctx m, MonadUpdates m) => m ()
 applyUpdate = removeNextUpdate >> applyLastUpdate
+
+----------------------------------------------------------------------------
+-- Update proposals
+----------------------------------------------------------------------------
+
+-- | Get info on all confirmed proposals
+confirmedProposals
+    :: (HasUpdateConfiguration, MonadDBRead m)
+    => m [CConfirmedProposalState]
+confirmedProposals = do
+    proposals <- GS.getConfirmedProposals Nothing
+    pure $ map (CConfirmedProposalState . show) proposals
 
 ----------------------------------------------------------------------------
 -- Sync progress

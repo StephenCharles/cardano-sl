@@ -53,6 +53,7 @@ module Pos.Wallet.Web.ClientTypes.Types
       , spLocalCD
       , spNetworkCD
       , spPeers
+      , CConfirmedProposalState (..)
       ) where
 
 import           Universum
@@ -510,3 +511,6 @@ instance Buildable SyncProgress where
 
 instance Default SyncProgress where
     def = SyncProgress 0 mzero 0
+
+newtype CConfirmedProposalState = CConfirmedProposalState Text
+    deriving (Show, Generic, Buildable)

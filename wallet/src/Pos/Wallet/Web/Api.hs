@@ -47,6 +47,8 @@ module Pos.Wallet.Web.Api
        , PostponeUpdate
        , ApplyUpdate
 
+       , ConfirmedProposals
+
        , RedeemADA
        , RedeemADAPaperVend
 
@@ -86,10 +88,10 @@ import           Pos.Util.Servant           (ApiLoggingConfig, CCapture, CQueryP
 import           Pos.Wallet.Web.ClientTypes (Addr, CAccount, CAccountId, CAccountInit,
                                              CAccountMeta, CAddress, CCoin, CId,
                                              CInitialized, CPaperVendWalletRedeem,
-                                             CPassPhrase, CProfile, CTx, CTxId, CTxMeta,
-                                             CUpdateInfo, CWallet, CWalletInit,
-                                             CWalletMeta, CWalletRedeem, SyncProgress,
-                                             Wal)
+                                             CPassPhrase, CProfile, CConfirmedProposalState, CTx,
+                                             CTxId, CTxMeta, CUpdateInfo, CWallet,
+                                             CWalletInit, CWalletMeta, CWalletRedeem,
+                                             SyncProgress, Wal)
 import           Pos.Wallet.Web.Error       (WalletError (DecodeError),
                                              catchEndpointErrors)
 
@@ -315,6 +317,16 @@ type ApplyUpdate =
     :> WRes Post ()
 
 -------------------------------------------------------------------------
+-- Update proposals
+-------------------------------------------------------------------------
+
+type ConfirmedProposals =
+       "update"
+    :> "proposals"
+    :> "confirmed"
+    :> WRes Get [CConfirmedProposalState]
+
+-------------------------------------------------------------------------
 -- Redemptions
 -------------------------------------------------------------------------
 
@@ -460,6 +472,11 @@ type WalletApi = ApiPrefix :> (
      PostponeUpdate
     :<|>
      ApplyUpdate
+    :<|>
+    -------------------------------------------------------------------------
+     -- Update proposals
+     -------------------------------------------------------------------------
+     ConfirmedProposals
     :<|>
      -------------------------------------------------------------------------
      -- Redemptions

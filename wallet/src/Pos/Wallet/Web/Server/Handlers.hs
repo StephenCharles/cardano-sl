@@ -85,6 +85,9 @@ servantHandlers =
      M.applyUpdate
     :<|>
 
+     M.confirmedProposals
+    :<|>
+
      M.redeemAda
     :<|>
      M.redeemAdaPaperVend

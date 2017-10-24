@@ -26,8 +26,9 @@ import           Pos.Util.Servant                 (FromCType (..),
                                                    ToCType (..), WithTruncatedLog (..))
 import           Pos.Wallet.Web.ClientTypes.Types (AccountId (..), CAccount (..),
                                                    CAccountId (..), CAddress (..),
-                                                   CCoin (..), CElectronCrashReport (..),
-                                                   CHash (..), CId (..), CPassPhrase (..),
+                                                   CCoin (..), CConfirmedProposalState,
+                                                   CElectronCrashReport (..), CHash (..),
+                                                   CId (..), CPassPhrase (..),
                                                    CPtxCondition (..), CTx (..),
                                                    CTxId (..), CWallet (..), mkCTxId)
 import           Pos.Wallet.Web.Pending.Types     (PtxCondition (..))
@@ -179,6 +180,9 @@ instance HasTruncateLogPolicy CAddress where
         in take 5 (withMoney <> withoutMoney)
       where
         zeroMoney = encodeCType minBound
+
+instance HasTruncateLogPolicy CConfirmedProposalState where
+    truncateLogPolicy = take 5
 
 -- TODO [CSM-466] deal with this hack
 instance Buildable (WithTruncatedLog ([CTx], Word)) where

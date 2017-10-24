@@ -6,7 +6,8 @@ import           Data.Aeson.TH                (defaultOptions, deriveJSON, deriv
 import           Pos.Core.Types               (SoftwareVersion (..))
 import           Pos.Util.BackupPhrase        (BackupPhrase)
 import           Pos.Wallet.Web.ClientTypes   (Addr, CAccount, CAccountId, CAccountInit,
-                                               CAccountMeta, CAddress, CCoin, CHash, CId,
+                                               CAccountMeta, CAddress, CCoin,
+                                               CConfirmedProposalState, CHash, CId,
                                                CInitialized, CInitialized,
                                                CPaperVendWalletRedeem, CProfile, CProfile,
                                                CPtxCondition, CTExMeta, CTx, CTxId,
@@ -48,3 +49,4 @@ deriveToJSON defaultOptions ''CTx
 deriveToJSON defaultOptions ''CTExMeta
 deriveToJSON defaultOptions ''SoftwareVersion
 deriveToJSON defaultOptions ''CUpdateInfo
+deriveToJSON defaultOptions ''CConfirmedProposalState

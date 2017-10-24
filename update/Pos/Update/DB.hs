@@ -259,7 +259,7 @@ instance DBIteratorClass ConfPropIter where
 -- | Get confirmed proposals which update our application
 -- (i. e. application name matches our application name and there is
 -- update data for our system tag) and have version greater than
--- argument. Intended usage is to pass numberic version of this
+-- argument. Intended usage is to pass numeric version of this
 -- software as argument.
 -- Returns __all__ confirmed proposals if the argument is 'Nothing'.
 getConfirmedProposals

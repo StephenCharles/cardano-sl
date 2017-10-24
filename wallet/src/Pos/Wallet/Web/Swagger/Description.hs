@@ -158,6 +158,11 @@ instance HasCustomSwagger ApplyUpdate where
         "Apply last update."
 
 
+instance HasCustomSwagger ConfirmedProposals where
+    swaggerModifier = modifyDescription
+        "Get info on all proposals for the specified app."
+
+
 instance HasCustomSwagger RedeemADA where
     swaggerModifier = modifyDescription
         "Redeem ADA."
