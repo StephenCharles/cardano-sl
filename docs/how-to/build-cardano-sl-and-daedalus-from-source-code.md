@@ -99,21 +99,7 @@ After the project is built - it can take quite a long time -  the built binaries
 
 ## Daedalus Wallet
 
-Let's proceed with building the wallet. First of all, let's build Daedalus Bridge.
-
-### Building Daedalus Bridge
-
-Currently Nix expressions don't install Node.js and NPM, so those have to be installed manually.
-To do that, consult the repositories of the package manager of the according OS, or [download binaries](https://nodejs.org/en/download/). Please make sure you have Node.js version 6. You can use [nvm](https://github.com/creationix/nvm#installation)
-to install proper version.
-
-Now run the following script:
-
-    [nix-shell:~/cardano-sl]$ ./scripts/build/daedalus-bridge.sh
-
-After that `daedalus-client-api` will be registered in the local NPM package repository. This way, at any time, `daedalus-client-api` dependency can be satisfied in any project that depends on it by manually running following command:
-
-    [nix-shell:~/cardano-sl]$ npm link daedalus-client-api
+Let's proceed with building the wallet.
 
 ### Building Daedalus
 
@@ -125,7 +111,6 @@ Clone Daedalus repository and go to the root directory:
 
 Then run the following script:
 
-    [nix-shell:~/daedalus]$ ./scripts/link-bridge.sh
     [nix-shell:~/daedalus]$ npm install
 
 ### Running acceptance tests
